@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0 maximum-scale=1.0" />
+    <!-- ICON -->
+    <link rel="icon" href="./assets/favicon.ico" sizes="32x32" type="image/vnd.microsoft.icon">
+    <!-- TITLE -->
+    <title>Bhutan's Population and Housing Information</title>
+    <!-- META -->
+    <meta property="og:title" content="Bhutan's Population and Housing information">
+    <meta property="og:description" content="This application provides information on the Bhutan's population and housing.">
+    <meta property="og:url" content="https://your-domain-here/apps/BTN/DSS/index.html">
+    <meta property="og:image" content="https://your-domain-here/apps/BTN/DSS/assets/app.png">
+
+    <!-- CHARTJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <!-- FONT AWESOME -->
+    <link href="./assets/fontawesome-free-6.4.2-web/css/fontawesome.css" rel="stylesheet">
+    <link href="./assets/fontawesome-free-6.4.2-web/css/brands.css" rel="stylesheet">
+    <link href="./assets/fontawesome-free-6.4.2-web/css/solid.css" rel="stylesheet">
+
+    <!-- CALCITE -->
+    <script type="module" src="https://js.arcgis.com/calcite-components/2.6.0/calcite.esm.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/2.6.0/calcite.css"/>
+
+    <!-- ArcGIS API for JavaScript-->
+    <link href="https://js.arcgis.com/4.29/@arcgis/core/assets/esri/themes/light/main.css" rel="stylesheet"/>
+    <script src="https://js.arcgis.com/4.29/"></script>
+
+    <!-- APPLICATION -->
+    <link rel="stylesheet" type="text/css" href="./css/application.css">
+    <link rel="stylesheet" type="text/css" href="./css/popup.css">
+    <script type="module" src="./js/Application.js"></script>    
+  </head>
+  <body class="calcite-mode-light">
+    <calcite-shell>
+
+      <!-- HEADER -->
+      <calcite-navigation slot="header">
+        <calcite-action slot="navigation-action" compact>
+          <img src="./assets/cropped-RUB.png" style="width:50px;height:50px;" alt="Royal University of Bhutan">
+        </calcite-action>
+        <calcite-action slot="navigation-action" compact>
+          <img src="./assets/JNEC-Logo.png" style="width:50px;height:50px;" alt="Jigme Namgyel Engineering College">
+        </calcite-action>
+        <div slot="logo" class="header">
+          <h1>Bhutan's Population and Housing information</h1>
+          <p>This application provides information on the Bhutan's population and housing.</p>
+        </div>
+        <calcite-action slot="content-end" id="app-share-action" appearance="transparent" scale="m" title="Share the content" text="Share the content" icon="link"></calcite-action>
+        <calcite-action slot="content-end" id="app-details-action" appearance="transparent" scale="m" title="App details" text="App details" icon="information"></calcite-action>
+        <calcite-action slot="content-end" id="about-us-action" appearance="transparent" scale="m" title="About Us" text="About Us" icon="users">
+</calcite-action>
+        <div id="sign-in-container" slot="user" hidden></div>
+      </calcite-navigation>
+
+      <!-- LEFT PANEL -->
+      <calcite-shell-panel slot="panel-start" position="start" width-scale="m" collapsed="true">
+        <calcite-action-bar id="side-panel-action-bar" slot="action-bar">
+          <calcite-action text="Map" icon="layers" class="toggle-action" data-toggle="map"></calcite-action>
+          <calcite-action text="Basemap" icon="basemap" class="toggle-action" data-toggle="basemap"></calcite-action>
+          <calcite-action text="Add Data" icon="upload" class="toggle-action" data-toggle="upload-data"></calcite-action>
+        </calcite-action-bar>
+
+        <!-- MAP CONTROL PANEL -->
+        <calcite-panel heading="Map Layers" class="toggle-panel" data-toggle="map">
+          <calcite-block heading="Layer List" collapsible open>
+            <calcite-icon slot="icon" icon="analysis-overlay"></calcite-icon>
+            <div id="layer-list-container"></div>
+          </calcite-block>
+
+          <calcite-block heading="Legend" collapsible open>
+            <calcite-icon slot="icon" icon="legend"></calcite-icon>
+            <div id="legend-container"></div>
+          </calcite-block>
+        </calcite-panel>
+
+        <!-- BASEMAP PANEL -->
+        <calcite-panel heading="Basemap" class="toggle-panel" data-toggle="basemap" hidden>
+          <div id="basemap-gallery-container"></div>
+        </calcite-panel>
+
+        <!-- ADD DATA PANEL -->
+        <calcite-panel heading="Add Data" class="toggle-panel" data-toggle="upload-data" hidden>
+          <div slot="header-actions-end">
+            <calcite-action icon="x" title="close panel" class="toggle-close" data-toggle="upload-data"></calcite-action>
+          </div>
+          <calcite-block open>
+            <calcite-label>The Add Data allows you to temporarily add a zipped shapefile to the app at run time.</calcite-label>
+            <calcite-label>
+              <form enctype="multipart/form-data" method="post" id="uploadForm">
+                <input type="file" name="file" id="inFile" accept=".zip" />
+              </form>
+            </calcite-label>
+            <calcite-label>
+              <li>A shapefile (.zip, ZIP archive containing the .shp, .shx, .dbf, and .prj files).</li>
+              <li>A maximum of 1000 features is allowed.</li>
+              <li>Compression formats other than a .zip archive are not supported.</li>
+            </calcite-label>
+            <calcite-button id="upload-btn" width="full" icon-start="upload" disabled>
+              Upload Data
+            </calcite-button>
+            <calcite-button id="remove-btn" width="full" icon-start="trash" appearance="outline" color="red">
+              Remove Uploaded Data
+            </calcite-button>
+            <calcite-loader id="upload-loader" type="indeterminate" scale="s" text="Uploading..." hidden></calcite-loader>
+          </calcite-block>
+        </calcite-panel>
+      </calcite-shell-panel>
+
+      <!-- CENTER MAP CONTAINER -->
+      <calcite-panel id="center-container">
+        <div id="view-container"></div>
+      </calcite-panel>
+
+      <!-- RIGHT PANEL - STATISTICS -->
+      <calcite-shell-panel slot="panel-end" id="panel-stats-end" position="end" collapsed="true" display-mode="dock" width-scale="m">
+        <div class="details-node-container">
+          <calcite-block open heading="POPULATION DENSITY SUMMARY">
+            <calcite-icon scale="s" slot="icon" icon="chart-magnifying-glass"></calcite-icon>
+            <calcite-notice id="admin-name" open scale="s" hidden>
+              <div slot="title"></div>
+              <div slot="message"></div>
+            </calcite-notice>
+            <div id="admin-descriptive"></div>
+            <div class="polar-chart-wrapper">
+              <canvas id="demographics-polar-chart" width="350" height="350"></canvas>
+            </div>
+          </calcite-block>
+
+          <!-- RISK INDICATORS -->
+          <calcite-block open heading="DEMOGRAPHIC INFORMATION">
+            <calcite-icon scale="s" slot="icon" icon="key"></calcite-icon>
+            <table class="table-risk-indicator">
+              <tbody>
+                <tr>
+                  <td><i class="fa-solid fa-person"></i></td>
+                  <td>Population (PHCB 2017)</td>
+                  <td id="total-population-label" class="details-label">--,--</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-mars"></i></td>
+                  <td>Male (PHCB 2017)</td>
+                  <td id="male-population-label" class="details-label">--,--</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-venus"></i></td>
+                  <td>Female (PHCB 2017)</td>
+                  <td id="female-population-label" class="details-label">--,--</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-baby"></i></td>
+                  <td>Children below 5 years old (PHCB 2017)</td>
+                  <td id="age-5-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-person-cane"></i></td>
+                  <td>Elderly above 65 years old (PHCB 2017)</td>
+                  <td id="age-65-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-users"></i></td>
+                  <td>Population Density (per km²)</td>
+                  <td id="population-density-label" class="details-label">--.--</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-people-roof"></i></td>
+                  <td>Households (PHCB 2017)</td>
+                  <td id="total-household-label" class="details-label">--,--</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-plug"></i></td>
+                  <td>HH with electricity (PHCB 2017)</td>
+                  <td id="with-electricity-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-plug"></i> <i class="fa-solid fa-ban" style="color:#d9534f"></i></td>
+                  <td>HH without electricity (PHCB 2017)</td>
+                  <td id="without-electricity-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-mobile"></i></td>
+                  <td>HH with mobile cellular (PHCB 2017)</td>
+                  <td id="with-internet-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-mobile"></i> <i class="fa-solid fa-ban" style="color:#d9534f"></i></td>
+                  <td>HH without mobile cellular (PHCB 2017)</td>
+                  <td id="without-internet-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-school"></i></td>
+                  <td>Schools</td>
+                  <td id="schools-label" class="details-label">--.-</td>
+                </tr>
+                <tr>
+                  <td><i class="fa-solid fa-hospital"></i></td>
+                  <td>Healthcare Facilities</td>
+                  <td id="health-label" class="details-label">--.-</td>
+                </tr>
+              </tbody>
+            </table>
+          </calcite-block>
+        </div>
+      </calcite-shell-panel>
+
+      <!-- ALERTS AND NOTIFICATIONS -->
+      <calcite-alert id="app-share-alert" slot="alerts" kind="success" icon="launch" placement="bottom" auto-close auto-close-duration="medium">
+        <div slot="message">Shareable link has been copied to the clipboard.</div>
+        <calcite-link slot="link" href="#" target="_blank" role="link" title="open in new tab">open in new tab</calcite-link>
+      </calcite-alert>
+      
+      <calcite-alert id="app-add-data" slot="alerts" kind="success" placement="bottom" auto-close auto-close-duration="medium">
+        <div slot="title"></div>
+        <div slot="message"></div>
+      </calcite-alert>
+
+      <calcite-alert id="app-notice" slot="alerts" kind="danger" placement="bottom" width="auto">
+        <div slot="title"></div>
+        <div slot="message"></div>
+      </calcite-alert>
+
+      <!-- Add this inside your <body>, with your other alerts -->
+      <calcite-alert id="hospital-info-alert" slot="alerts" kind="info" placement="bottom" auto-close auto-close-duration="medium" hidden>
+        <div slot="title">Tip</div>
+        <div slot="message">
+          Click on a hospital point on the map to see more information.<br>
+          <calcite-label layout="inline" style="margin-top:8px;">
+            <calcite-checkbox id="hide-hospital-alert-checkbox"></calcite-checkbox>
+            <span style="margin-left:6px;">Don't show this again (until refresh)</span>
+          </calcite-label>
+        </div>
+      </calcite-alert>
+
+      <!-- Custom Hospital Info Popup -->
+      <div id="hospital-info-popup">
+        <div class="popup-header">
+          <span style="font-size:1.3em; font-weight:600; letter-spacing:0.5px;">Hospital Info</span>
+          <button id="close-hospital-popup" style="background:none; border:none; color:white; font-size:1.7em; cursor:pointer; line-height:1;">&times;</button>
+        </div>
+        <div id="hospital-popup-content" class="popup-content">
+          <h3></h3>
+          <p></p>
+        </div>
+      </div>
+
+      <!-- APP DETAILS MODAL -->
+      <calcite-modal id="app-details-modal" slot="modals" kind="brand" scale="m" width="m" aria-labelledby="app-modal-title">
+        <h3 slot="header" id="app-modal-title" class="application-title">Bhutan's Population and Housing Information</h3>
+        <div slot="content" class="application-description">
+          <p>A geospatial platform for analyzing Bhutan's census data, housing distribution, and demographic trends.</p>
+          <p>Key features include:</p>
+          <ul>
+            <li>Interactive population density maps</li>
+            <li>Housing unit distribution by region</li>
+            <li>Demographic charts</li>
+            <li>Visualizing Hospital information</li>
+          </ul>
+        </div>
+        <calcite-chip slot="back" id="chip-beta" scale="s">
+          Version 1.0.0
+        </calcite-chip>
+        <div slot="secondary">
+          <calcite-label layout="inline">
+            <span>Hide on startup</span>
+            <calcite-checkbox id="hide-startup-checkbox"></calcite-checkbox>
+          </calcite-label>
+        </div>
+      </calcite-modal>
+
+      <!--About Us-->
+      <calcite-modal id="about-us-modal" slot="modals" kind="brand" scale="m" width="m" aria-labelledby="about-us-title">
+        <h3 slot="header" id="about-us-title" class="application-title">About Us</h3>
+        <div slot="content" style="display: flex; flex-direction: column; align-items: center;">
+          <div style="display: flex; gap: 2em; flex-wrap: wrap; justify-content: center;">
+            <!-- Person 1 -->
+            <div style="text-align: center;">
+              <img src="./assets/Jcop.jpeg" alt="Name" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+              <div><strong>Sonam Jamtsho</strong></div>
+              <div>(05210068)</div>
+            </div>
+            <!-- Person 2 -->
+            <div style="text-align: center;">
+              <img src="./assets/dem.jpeg" alt="Teammate Name" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+              <div><strong>Tashi Dem</strong></div>
+              <div>(05210069)</div>
+            </div>
+            <!-- Person 3 -->
+            <div style="text-align: center;">
+              <img src="./assets/boks.jpeg" alt="Teammate Name" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+              <div><strong>Thinley Yoezer</strong></div>
+              <div>(05210070)</div>
+            </div>
+            <!-- Person 4 -->
+               <!-- Person 2 -->
+            <div style="text-align: center;">
+              <img src="./assets/Sheks.JPG" alt="Teammate Name" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+              <div><strong>Tshering Dorji Sherpa</strong></div>
+              <div>(05210071)</div>
+            </div>
+          </div>
+          <div style="margin-top:1em; text-align:center;">
+            <p>We are a team from B.E. in Surveying & Geoinformatics (2021 Batch).<br>
+            Contact: <a href="mailto:your@email.com">BE4SG@email.com</a></p>
+          </div>
+        </div>
+      </calcite-modal>
+    </calcite-shell>
+
+    <!-- LOADER -->
+    <calcite-loader id="app-loader" type="indeterminate" scale="l" text="Loading..."></calcite-loader>
+  </body>
+</html>

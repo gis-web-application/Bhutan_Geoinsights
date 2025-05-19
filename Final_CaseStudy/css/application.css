@@ -1,0 +1,476 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+  font-family: 'Times New Roman', Times, serif; /* Added from second CSS */
+}
+
+.calcite-mode-light {
+  color-scheme: light;
+  --calcite-mode-name: light;
+  --calcite-color-brand: #ff7e5f;           /* Vibrant coral/orange */
+  --calcite-color-brand-hover: #feb47b;     /* Soft orange/peach */
+  --calcite-color-brand-press: #ffb385;     /* Peach */
+  --calcite-color-text-link: #ff6a00;       /* Orange for links */
+  --calcite-ui-text-highlight: #ffb385;
+  --calcite-color-background: #fff7f0;      /* Main app background (very light peach) */
+  --calcite-color-foreground-1: #fff0e6;    /* Panel/card background (peach/cream) */
+  --calcite-color-foreground-2: #ffe5d0;    /* Lighter panel/card background */
+  --calcite-color-foreground-3: #ffd6b3;    /* Even lighter for borders/secondary */
+  --calcite-color-text-1: #000000; /* Changed to black from second CSS */
+  --calcite-color-text-2: #333333; /* Changed to dark gray from second CSS */
+  --calcite-color-text-3: #666666; /* Changed to medium gray from second CSS */
+  --calcite-color-text-inverse: #FFFFFF; /* Changed to white from second CSS */
+  --calcite-link-blue-underline: rgba(30, 144, 255, 0.5); /* Changed from second CSS */
+  --calcite-color-inverse: #000000; /* Changed to black from second CSS */
+  --calcite-color-inverse-hover: #000000; /* Changed to black from second CSS */
+  --calcite-color-inverse-press: #000000; /* Changed to black from second CSS */
+  --calcite-color-border-1: #C0C0C0; /* Changed to silver from second CSS */
+  --calcite-color-border-2: #D3D3D3; /* Changed to light gray from second CSS */
+  --calcite-color-border-3: #E0E0E0; /* Changed to light gray from second CSS */
+  --calcite-color-border-input: #A9A9A9; /* Changed to dark gray from second CSS */
+  --calcite-ui-icon-color: #1E90FF; /* Changed to bright dodger blue from second CSS */
+  --calcite-color-status-info: #0077B6; /* Changed to bright blue from second CSS */
+  --calcite-color-status-success: #32CD32; /* Changed to lime green from second CSS */
+  --calcite-color-status-warning: #FFD700; /* Changed to gold from second CSS */
+  --calcite-color-status-danger: #FF4500; /* Changed to orange red from second CSS */
+  --calcite-color-status-danger-hover: #FF0000; /* Changed to bright red from second CSS */
+  --calcite-color-status-danger-press: #B22222; /* Changed to firebrick from second CSS */
+}
+
+.calcite-mode-dark {
+  color-scheme: dark;
+  --calcite-mode-name: dark;
+  --calcite-color-brand: #1E90FF; /* Changed to bright dodger blue from second CSS */
+  --calcite-color-brand-hover: #0077B6; /* Changed to bright blue from second CSS */
+  --calcite-color-brand-press: #005F8C; /* Changed to darker blue from second CSS */
+  --calcite-color-text-1: #FFFFFF; /* Changed to white from second CSS */
+  --calcite-color-text-2: #E0E0E0; /* Changed to light gray from second CSS */
+  --calcite-color-text-3: #C0C0C0; /* Changed to silver from second CSS */
+  --calcite-ui-text-highlight: #1E90FF; /* Changed to bright dodger blue from second CSS */
+  --calcite-color-text-inverse: #000000; /* Changed to black from second CSS */
+  --calcite-color-text-link: #0077B6; /* Changed to bright blue from second CSS */
+  --calcite-link-blue-underline: rgba(30, 144, 255, 0.5); /* Changed from second CSS */
+  --calcite-color-background: #2B2B2B; /* Changed to dark gray from second CSS */
+  --calcite-color-foreground-1: #333333; /* Changed to dark gray from second CSS */
+  --calcite-color-foreground-2: #444444; /* Changed to darker gray from second CSS */
+  --calcite-color-foreground-3: #555555; /* Changed to even darker gray from second CSS */
+  --calcite-color-inverse: #D4D4D4; /* Changed to light gray from second CSS */
+  --calcite-color-inverse-hover: #AAAAAA; /* Changed to gray from second CSS */
+  --calcite-color-inverse-press: #7F7F7F; /* Changed to dark gray from second CSS */
+  --calcite-color-border-1: #555555; /* Changed to dark gray from second CSS */
+  --calcite-color-border-2: #666666; /* Changed to medium gray from second CSS */
+  --calcite-color-border-3: #777777; /* Changed to light gray from second CSS */
+  --calcite-color-border-input: #888888; /* Changed to light gray from second CSS */
+  --calcite-ui-icon-color: #1E90FF; /* Changed to bright dodger blue from second CSS */
+  --calcite-color-status-info: #0077B6; /* Changed to bright blue from second CSS */
+  --calcite-color-status-success: #32CD32; /* Changed to lime green from second CSS */
+  --calcite-color-status-warning: #FFD700; /* Changed to gold from second CSS */
+  --calcite-color-status-danger: #FF4500; /* Changed to orange red from second CSS */
+  --calcite-color-status-danger-hover: #FF0000; /* Changed to bright red from second CSS */
+  --calcite-color-status-danger-press: #B22222; /* Changed to firebrick from second CSS */
+}
+
+/* ArcGIS Widget Styling */
+.esri-widget,
+.esri-layer-list__item,
+.esri-search {
+  color: var(--calcite-color-text-2);
+  background-color: var(--calcite-color-foreground-1);
+}
+
+.esri-input,
+.esri-menu {
+  color: var(--calcite-color-text-2);
+  background-color: var(--calcite-color-background);
+}
+
+.esri-menu__list-item--focus,
+.esri-menu__list-item:hover,
+.esri-menu__list-item:focus {
+  background-color: var(--calcite-color-foreground-1);
+}
+
+.esri-widget--button {
+  color: var(--calcite-color-text-1);
+  background-color: var(--calcite-color-foreground-3);
+}
+
+.esri-layer-list__item {
+  border-color: var(--calcite-color-border-2);
+  background-color: transparent !important;
+}
+
+.esri-layer-list {
+  padding: 0px !important;
+  background-color: transparent !important;
+}
+
+.esri-layer-list__item {
+  margin: 0;
+}
+
+.esri-layer-list__item-container {
+  padding: 10px !important;
+}
+
+.esri-icon-non-visible::before {
+  content: "\e610";
+}
+
+.esri-icon-visible::before {
+  content: "\e611";
+}
+
+.esri-view .esri-view-surface--touch-none:focus::after {
+  outline: none !important;
+}
+
+/* Application Styling */
+.application-title {
+  color: var(--calcite-color-brand);
+}
+
+calcite-shell[content-behind] #center-container {
+  margin: 0 50px 0 50px;
+}
+
+calcite-navigation[slot="header"] {
+  --calcite-navigation-border-color: var(--calcite-color-brand);
+}
+
+calcite-navigation[slot="header"] [slot] {
+  margin: 0 0.2rem;
+}
+
+calcite-navigation[slot="header"] calcite-action[slot="navigation-action"]:first-of-type {
+  margin-left: 1.2rem;
+  pointer-events: none;
+}
+
+calcite-navigation[slot="header"] calcite-action[slot="navigation-action"] {
+  pointer-events: none;
+}
+
+
+.header h1 {
+  font-size: 1.5rem;
+  color: var(--calcite-color-brand);
+  margin: 0;
+  font-weight: bold;
+  padding: 10px 0px 0px 20px;
+}
+
+.header p {
+  font-size: 1rem;
+  color: var(--nav-desc-color);
+  margin: 0;
+  padding: 0px 0px 0px 20px ;
+}
+
+#admin-descriptive,
+#admin-name [slot="title"],
+#admin-name [slot="message"] {
+  line-height: 1.3; /* Adjust as needed */
+}
+
+calcite-navigation calcite-action[slot="navigation-action"] {
+  --calcite-color-icon-color: var(--calcite-color-brand);
+}
+
+calcite-loader#app-loader {
+  --calcite-loader-size: 8rem;
+  align-self: center;
+  justify-self: center;
+}
+
+calcite-modal {
+  --calcite-modal-content-background: var(--calcite-color-background);
+}
+
+calcite-modal [slot="secondary"] calcite-label {
+  --calcite-label-margin-bottom: 0;
+}
+
+calcite-list-item {
+  --calcite-color-text-1: var(--calcite-color-brand);
+}
+
+calcite-block {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+calcite-card {
+  margin-bottom: 0.75rem;
+  text-align: start;
+}
+
+/* Layout Styling */
+.content-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#center-container {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#view-container {
+  padding: 0;
+  margin: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px; /* Added from second CSS */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added from second CSS */
+}
+
+#chip-beta {
+  --calcite-color-foreground-2: #fff6a3;
+}
+
+.item-button {
+  margin: 0;
+  padding: 12px; /* Changed from second CSS */
+  border: none;
+  display: block;
+  width: 100%;
+  background: transparent;
+  text-align: left; /* Added from second CSS */
+  color: var(--calcite-color-text-1); /* Added from second CSS */
+  cursor: pointer; /* Added from second CSS */
+  transition: background-color 0.3s ease; /* Added from second CSS */
+}
+
+.item-button:hover {
+  background-color: var(--calcite-color-foreground-2); /* Added from second CSS */
+}
+
+
+  
+/* Chip styling for thematic layers */
+calcite-chip:first-of-type {
+  --calcite-color-focus-color: var(--risk-color);
+  --calcite-color-icon-color: var(--risk-color);
+}
+
+calcite-chip:first-of-type[selected] {
+  --calcite-color-foreground-2: rgba(255, 0, 0, 0.25); /* Changed from second CSS */
+}
+
+calcite-chip:nth-child(2) {
+  --calcite-color-focus-color: var(--susceptibility-color);
+  --calcite-color-icon-color: var(--susceptibility-color);
+}
+
+calcite-chip:nth-child(2)[selected] {
+  --calcite-color-foreground-2: rgba(255, 165, 0, 0.25); /* Changed from second CSS */
+}
+
+calcite-chip:nth-child(3) {
+  --calcite-color-focus-color: var(--slope-color);
+  --calcite-color-icon-color: var(--slope-color);
+}
+
+calcite-chip:nth-child(3)[selected] {
+  --calcite-color-foreground-2: rgba(128, 0, 128, 0.25); /* Changed from second CSS */
+}
+
+calcite-chip:nth-child(4) {
+  --calcite-color-focus-color: var(--infrastructure-color);
+  --calcite-color-icon-color: var(--infrastructure-color);
+}
+
+calcite-chip:nth-child(4)[selected] {
+  --calcite-color-foreground-2: rgba(62, 142, 222, 0.25);
+}
+
+.details-node-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--calcite-color-foreground-1);
+  overflow-y: auto;
+  padding: 5px; /* Added from second CSS */
+  border-radius: 8px; /* Added from second CSS */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Added from second CSS */
+}
+
+/* Risk Indicators Table */
+calcite-block h4 {
+  font-weight: normal; /* Removes bold styling */
+}
+
+.table-risk-indicator {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table-risk-indicator td {
+  padding: 8px;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-risk-indicator td:first-child {
+  text-align: center;
+  width: 40px;
+}
+
+.table-risk-indicator td:last-child {
+  text-align: right;
+}
+
+.table-risk-indicator i {
+  font-size: 1.2em;
+  color: var(--calcite-color-brand);
+}
+
+.polar-chart-wrapper {
+  position: relative;
+  width: 365px;
+  background: #fff;
+}
+
+.polar-chart-wrapper canvas {
+  width: 100% !important;
+  height: 300px !important;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--calcite-color-brand);
+  border-radius: 4px; /* Added from second CSS */
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 8px;
+  background-color: var(--calcite-color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--calcite-color-brand);
+  border-radius: 4px; /* Added from second CSS */
+}
+
+/* Sharing controls */
+#app-share-action,
+#app-share-toggle {
+  margin-left: 0.5rem;
+}
+
+#app-share-toggle[active] {
+  color: var(--calcite-ui-danger);
+}
+
+#app-share-alert calcite-link {
+  display: block;
+  margin-top: 0.5rem;
+  word-break: break-all;
+  color: var(--calcite-ui-text-1);
+}
+
+#app-share-alert calcite-link:hover {
+  color: var(--calcite-ui-brand);
+}
+
+#app-add-alert calcite-link:hover {
+  color: var(--calcite-ui-brand);
+}
+
+/* Prevent layout shifts */
+html, body {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* Optimize panel rendering */
+calcite-shell-panel {
+  contain: layout paint style;
+  transform-style: preserve-3d;
+}
+
+/* Smooth panel transitions */
+calcite-panel {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Fix for potential z-index issues */
+calcite-shell-panel[slot="panel-start"] {
+  z-index: 10;
+}
+/* Add to your application.css */
+#geolocation-block calcite-notice {
+  margin-bottom: 1rem;
+}
+
+/* View Loading Indicator */
+apl-view-loading {
+  position: relative !important;
+}
+
+/* Measurement Toolbar Styles - Scoped specifically to our toolbar */
+#toolbarDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: var(--calcite-color-foreground-1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Toolbar button default styles */
+#toolbarDiv .esri-widget--button {
+  color: var(--calcite-color-text-1);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover state */
+#toolbarDiv .esri-widget--button:hover {
+  background-color: var(--calcite-color-foreground-2);
+}
+
+/* Active state: Add a blue border instead of a full background */
+#toolbarDiv .esri-widget--button.active {
+  border: 2px solid var(--calcite-color-brand); /* Blue border */
+  background-color: transparent; /* No background */
+  color: var(--calcite-color-text-1); /* Keep text color */
+}
+
+/* Active state hover/focus: Keep the border and text consistent */
+#toolbarDiv .esri-widget--button.active:hover,
+#toolbarDiv .esri-widget--button.active:focus {
+  border: 2px solid var(--calcite-color-brand); /* Blue border */
+  background-color: transparent; /* No background */
+  color: var(--calcite-color-text-1); /* Keep text color */
+}
+
+/* Optional: Style the icons specifically in the toolbar */
+#toolbarDiv .esri-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+

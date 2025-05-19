@@ -1,0 +1,4 @@
+/* Or wherever your modal CSS is located */
+#image-viewer-modal {
+  z-index: 9999 !important;
+}

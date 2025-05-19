@@ -1,0 +1,17 @@
+{
+  "title": "",
+  "snippet": "",
+  "description": "",
+  "portalUrl": "https://nsdi.systems.gov.bt/portal",
+  "oauthappid": null,
+  "authMode": "anonymous",
+  "apiKey": null,
+  "group": "",
+  "webmap": "dbc2da3e6a70442d9f6f9759103dcd36",
+  "webscene": "",
+  "viewProps": {
+    "alphaCompositingEnabled": true
+  },
+  "container": "view-container",
+  "shareable": []
+}
